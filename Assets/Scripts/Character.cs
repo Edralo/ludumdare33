@@ -39,7 +39,6 @@ public class Character : MonoBehaviour
 
 	void OnCollisionEnter( Collision collision )
 	{
-		Debug.Log( collision.collider.name );
 		if ( collision.collider.CompareTag( "Ground" ) )
 		{
 			m_isGrounded = true;
@@ -48,7 +47,6 @@ public class Character : MonoBehaviour
 
 	void OnCollisionExit ( Collision collision ) 
 	{
-		Debug.Log( collision.collider.name );
 		if( collision.collider.CompareTag( "Ground" ) )
 		{
 			m_isGrounded = false;
