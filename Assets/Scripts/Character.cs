@@ -6,6 +6,7 @@ public class Character : MonoBehaviour
 	public Vector3 m_axis;
 	public float m_horizontalSpeed = 2f;
 	public float m_verticalSpeed = 2f;
+	public int m_resources = 0;
 
 	public Rigidbody m_rb;
 	void Awake ()

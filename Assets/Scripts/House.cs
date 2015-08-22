@@ -3,9 +3,8 @@ using System.Collections;
 
 public class House : MonoBehaviour {
 
-	public float m_SwitchDelay;
-	public float m_CooldownDelay;
-	public bool m_State;
+	public float m_switchDelay;
+	public bool m_state;
 
 	// Use this for initialization
 	void Start () {
@@ -18,32 +17,24 @@ public class House : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if (m_State && other.CompareTag("Player")){
-			m_State = !m_State;
+		if (m_state && other.CompareTag("Player")){
+			m_state = !m_state;
 			StopCoroutine("SwitchState");
-			StartCoroutine(Cooldown());
 		}
 	}
 
 	void OnTriggerStay(Collider other){
-		if (m_State && other.CompareTag("Player")){
-			m_State = !m_State;
+		if (m_state && other.CompareTag("Player")){
+			m_state = !m_state;
 			StopCoroutine("SwitchState");
-			StartCoroutine(Cooldown());
 		}
 	}
 
 	public IEnumerator SwitchState() {
 		while(true){
-			yield return new WaitForSeconds(m_SwitchDelay);
-			m_State = !m_State;
+			yield return new WaitForSeconds(m_switchDelay);
+			m_state = !m_state;
 		}
-	}
-
-	public IEnumerator Cooldown() {
-		yield return new WaitForSeconds(m_CooldownDelay);
-		m_State = !m_State;
-		StartCoroutine("SwitchState");
 	}
 	
 
