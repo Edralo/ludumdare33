@@ -1,9 +1,18 @@
 ﻿<Properties>
+<<<<<<< Updated upstream
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\House.cs">
     <Files>
       <File FileName="Assets\Scripts\Character.cs" Line="24" Column="3" />
       <File FileName="Assets\Scripts\House.cs" Line="15" Column="18" />
+=======
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Villager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Character.cs" Line="24" Column="1" />
+      <File FileName="Assets/Scripts/SmoothFollow.cs" Line="15" Column="67" />
+      <File FileName="Assets/Scripts/Villager.cs" Line="6" Column="2" />
+>>>>>>> Stashed changes
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
