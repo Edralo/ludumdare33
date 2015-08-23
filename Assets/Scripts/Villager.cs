@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 public enum e_weapon{
 	none=-1,rock,torch,spear
 }
@@ -20,6 +21,15 @@ public class Villager : MonoBehaviour
 	[Header("Maths lel")]
 	public float myangle;
 	public float mydistance;
+	[Header("Routing points")]
+	public List<Transform> routePoints = new List<Transform>();
+	public List<float> routeTiming = new List<float>();
+
+	private IEnumerator routeCoR = null;
+
+	void Start () {
+		StartCoroutine("switchRoutePoint");
+	}
 
 	void Update () 
 	{
@@ -53,6 +63,30 @@ public class Villager : MonoBehaviour
 			Gizmos.color = Color.green;
 		}
 		Gizmos.DrawWireSphere( transform.position, m_radiusDetection );
+	}
+
+	public IEnumerator route(Transform target, float wantedTime){
+		float progress = 0;
+		Vector3 startPosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+		while( progress < 1 ){
+			progress += Time.deltaTime / wantedTime;
+			transform.position = Vector3.Lerp(startPosition,target.position,progress);
+			yield return 0;
+		}
+	}
+
+	public IEnumerator switchRoutePoint(){
+		bool goforward = true;
+		int pointI = 1;
+		while(true){
+			routeCoR = route (routePoints[pointI],routeTiming[pointI]);
+			yield return StartCoroutine(routeCoR);
+			if( goforward && pointI == routePoints.Count - 1 || !goforward && pointI == 0 ){
+				goforward = !goforward;
+				transform.eulerAngles = new Vector2(transform.eulerAngles.x,transform.eulerAngles.y + 180f); 
+			}
+			pointI = goforward ? pointI+1: pointI-1;
+		}
 	}
 
 	public IEnumerator throwWeapon(){
