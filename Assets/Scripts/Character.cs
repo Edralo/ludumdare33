@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour 
 { 
@@ -8,6 +9,8 @@ public class Character : MonoBehaviour
 	public int m_jumpHeight;
 	public bool m_isGrounded = false;
 	public int m_resources = 0;
+	public GameObject m_fireBall;
+	public Text m_text;
 
 	
 	void FixedUpdate () 
@@ -35,6 +38,24 @@ public class Character : MonoBehaviour
 		{
 			GetComponent<Rigidbody>().AddForce (Vector3.up * m_jumpHeight);
 		}
+		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 )
+		{
+			m_resources -= 1;
+			if( transform.eulerAngles == new Vector3(0, 0, 0) )
+			{
+				Instantiate( m_fireBall, transform.position + Vector3.right, transform.rotation );
+			}
+			else 
+			{
+				Instantiate( m_fireBall, transform.position + Vector3.left, transform.rotation );
+			}
+		}
+
+		//------------------------------------------------------------------------------------------------
+		// UI
+
+		 m_text.text = "Ingredients: " + m_resources;
+
 	}
 
 	void OnCollisionEnter( Collision collision )
