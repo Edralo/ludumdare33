@@ -24,19 +24,27 @@ public class Character : MonoBehaviour
 		{
 			transform.Translate (Vector2.right * m_speed * Time.deltaTime);
 			transform.eulerAngles = new Vector2(0,0); 
+			//walk
 		}
-		if (Input.GetKey (KeyCode.LeftArrow)) 
+		else if (Input.GetKey (KeyCode.LeftArrow)) 
 		{
 			transform.Translate (Vector2.right * m_speed * Time.deltaTime);
 			transform.eulerAngles = new Vector2(0,180); 
+			//walk
+		}
+		else 
+		{
+			// idle
 		}
 		
 	}
+
 	void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded == true)
 		{
 			GetComponent<Rigidbody>().AddForce (Vector3.up * m_jumpHeight);
+			// Make animation of jump play
 		}
 		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 )
 		{
@@ -49,28 +57,36 @@ public class Character : MonoBehaviour
 			{
 				Instantiate( m_fireBall, transform.position + Vector3.left, transform.rotation );
 			}
+			//make animation of spell attack play
 		}
 
 		//------------------------------------------------------------------------------------------------
 		// UI
 
-		 //m_text.text = "Ingredients: " + m_resources;
+		 m_text.text = "Ingredients: " + m_resources;
 
 	}
 
 	void OnCollisionEnter( Collision collision )
 	{
-		if ( collision.collider.CompareTag( "Ground" ) )
-		{
-			m_isGrounded = true;
-		}
+		CheckGrounded(collision.collider.tag, true );
+	}
+
+	void OnCollisionStay( Collision collision ) 
+	{
+		CheckGrounded(collision.collider.tag, true );
 	}
 
 	void OnCollisionExit ( Collision collision ) 
 	{
-		if( collision.collider.CompareTag( "Ground" ) )
+		CheckGrounded(collision.collider.tag, false );
+	}
+
+	void CheckGrounded(string tag, bool valueToSet )
+	{
+		if( tag == "Ground" )
 		{
-			m_isGrounded = false;
+			m_isGrounded = valueToSet;
 		}
 	}
 	
