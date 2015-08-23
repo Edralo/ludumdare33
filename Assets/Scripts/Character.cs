@@ -54,7 +54,7 @@ public class Character : MonoBehaviour
 		//------------------------------------------------------------------------------------------------
 		// UI
 
-		 m_text.text = "Ingredients: " + m_resources;
+		 //m_text.text = "Ingredients: " + m_resources;
 
 	}
 

@@ -22,11 +22,13 @@ public class Villager : MonoBehaviour
 
 	void Update () 
 	{
-		Vector3 directionToTarget = transform.position - m_witch.position;
-		float angle = Vector3.Angle(transform.position, directionToTarget);
+		Vector3 directionToTarget = m_witch.position - transform.position;
 		float distance = directionToTarget.magnitude;
+		float dot = Vector3.Dot(Vector3.Normalize(directionToTarget), transform.right);
+		//Debug.Log("distance "+distance+" dot "+dot);
+		//NE PAS OUBLIER DE TOURNER EN Y LE NPC QUAND IL TOURNE POUR QUE LA VISION MARCHE
 
-		if (angle < 85 &&  distance < m_radiusDetection)
+		if (dot > 0.2 && distance < m_radiusDetection)
 		{
 			m_witchDetected = true; //Vector3.Distance( transform.position, m_witch.position ) < m_radiusDetection;
 			if(!m_isAttacking){
