@@ -11,11 +11,12 @@ public class Villager : MonoBehaviour
 	public bool m_witchDetected = false;
 	[Header("Weapon ref")]
 	public Transform m_rock;
+	public Transform m_spear;
 	[Header("Attack")]
 	public e_weapon currentWeapon;
 	public bool m_isAttacking = false;
 	public int m_throwCooldown;
-	public float m_throwStrength;
+	[Range(0,5)] public int m_accuracyNerf = 0;
 	[Header("Maths lel")]
 	public float myangle;
 	public float mydistance;
@@ -25,13 +26,12 @@ public class Villager : MonoBehaviour
 		Vector3 directionToTarget = m_witch.position - transform.position;
 		float distance = directionToTarget.magnitude;
 		float dot = Vector3.Dot(Vector3.Normalize(directionToTarget), transform.right);
-		//Debug.Log("distance "+distance+" dot "+dot);
 		//NE PAS OUBLIER DE TOURNER EN Y LE NPC QUAND IL TOURNE POUR QUE LA VISION MARCHE
 
 		if (dot > 0.2 && distance < m_radiusDetection)
 		{
 			m_witchDetected = true; //Vector3.Distance( transform.position, m_witch.position ) < m_radiusDetection;
-			if(!m_isAttacking){
+			if(currentWeapon != e_weapon.none && !m_isAttacking){
 				m_isAttacking = !m_isAttacking;
 				StartCoroutine("throwWeapon");
 			}
@@ -59,21 +59,33 @@ public class Villager : MonoBehaviour
 		while (true){
 			yield return new WaitForSeconds(m_throwCooldown);
 			float ang = ElevationAngle(m_witch);
-			float shootAng = Mathf.Abs(ang) + 20; // shoot 15 degree higher
+			float shootAng = Mathf.Abs(ang) + 15; // shoot 15 degree higher
 			// limit the shoot angle to a convenient range:
-			Debug.Log (shootAng);
 			shootAng = Mathf.Clamp(shootAng, 15, 85);
 
-
-			Rock weaponToThrow = Instantiate(m_rock).GetComponent<Rock>();
-			weaponToThrow.transform.position = transform.position;
-			weaponToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
+			switch(currentWeapon){
+				case e_weapon.rock :
+					Rock weaponToThrow = Instantiate(m_rock).GetComponent<Rock>();
+					weaponToThrow.transform.position = transform.position;
+					weaponToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
+					weaponToThrow.GetComponent<Rigidbody>().AddTorque(weaponToThrow.transform.forward * Random.Range(-100,-10));
+					break;
+				case e_weapon.spear:
+					Spear SpearToThrow = Instantiate(m_spear).GetComponent<Spear>();
+					SpearToThrow.transform.position = transform.position;
+					SpearToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
 	Vector3 BallisticVel(Transform target, float angle) { 
 		// get target direction
-		Vector3 dir = target.position - transform.position; 
+		Vector3 modifiedTargetPos = target.position;
+		modifiedTargetPos.x = modifiedTargetPos.x + Random.Range(-m_accuracyNerf,m_accuracyNerf);
+		Vector3 dir = modifiedTargetPos - transform.position; 
 		// get height difference
 		float h = dir.y; 
 		// retain only the horizontal direction
@@ -93,7 +105,9 @@ public class Villager : MonoBehaviour
 
 	float ElevationAngle(Transform target) {
 		// find the cannon->target vector:
-		Vector3 dir = target.position - transform.position;
+		Vector3 modifiedTargetPos = target.position;
+		modifiedTargetPos.x = modifiedTargetPos.x + Random.Range(-m_accuracyNerf,m_accuracyNerf);
+		Vector3 dir = modifiedTargetPos - transform.position; 
 		// create a horizontal version of it:
 		Vector3 dirH = new Vector3(dir.x, 0, dir.y);
 		// measure the unsigned angle between them:
