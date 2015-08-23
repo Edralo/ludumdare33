@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Villager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Villager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Character.cs" Line="24" Column="1" />
-      <File FileName="Assets/Scripts/SmoothFollow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Villager.cs" Line="21" Column="28" />
+      <File FileName="Assets\Scripts\House.cs" Line="22" Column="47" />
+      <File FileName="Assets\Scripts\Character.cs" Line="36" Column="67" />
+      <File FileName="Assets\Scripts\Villager.cs" Line="61" Column="66" />
+      <File FileName="Assets\Scripts\Rock.cs" Line="6" Column="1" />
+      <File FileName="Assets\Scripts\Weapon.cs" Line="7" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
