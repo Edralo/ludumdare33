@@ -8,10 +8,17 @@ public class Character : MonoBehaviour
 	public float m_speed; 
 	public int m_jumpHeight;
 	public bool m_isGrounded = false;
+	public bool m_isJumping = false;
+	public bool m_isCasting = false;
+	public bool m_isCrafting = false;
 	public int m_resources = 0;
 	public GameObject m_fireBall;
 	public Text m_text;
+	private Animator anim;
 
+	void Start(){
+		anim = GetComponentInChildren<Animator>();
+	}
 	
 	void FixedUpdate () 
 	{
@@ -20,33 +27,38 @@ public class Character : MonoBehaviour
 	
 	void Movement()
 	{
-		if (Input.GetKey (KeyCode.RightArrow)) 
-		{
-			transform.Translate (Vector2.right * m_speed * Time.deltaTime);
-			transform.eulerAngles = new Vector2(0,0); 
-			//walk
+		if(!m_isCasting && !m_isCrafting){
+			if (Input.GetKey (KeyCode.RightArrow)) 
+			{
+				transform.Translate (Vector2.right * m_speed * Time.deltaTime);
+				transform.eulerAngles = new Vector2(0,0); 
+				if(!m_isJumping && m_isGrounded)
+					anim.Play("walk");
+			}
+			else if (Input.GetKey (KeyCode.LeftArrow)) 
+			{
+				transform.Translate (Vector2.right * m_speed * Time.deltaTime);
+				transform.eulerAngles = new Vector2(0,180); 
+				if(!m_isJumping && m_isGrounded)
+					anim.Play("walk");
+			}
+			else 
+			{
+				if(!m_isJumping && m_isGrounded)
+					anim.Play("idle");
+			}
 		}
-		else if (Input.GetKey (KeyCode.LeftArrow)) 
-		{
-			transform.Translate (Vector2.right * m_speed * Time.deltaTime);
-			transform.eulerAngles = new Vector2(0,180); 
-			//walk
-		}
-		else 
-		{
-			// idle
-		}
-		
 	}
 
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded == true)
+		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded && !m_isCasting && !m_isCrafting)
 		{
 			GetComponent<Rigidbody>().AddForce (Vector3.up * m_jumpHeight);
-			// Make animation of jump play
+			anim.Play("jump");
+			StartCoroutine("delayJump");
 		}
-		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 )
+		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 && !m_isCasting && !m_isCrafting && m_isGrounded)
 		{
 			m_resources -= 1;
 			if( transform.eulerAngles == new Vector3(0, 0, 0) )
@@ -58,13 +70,15 @@ public class Character : MonoBehaviour
 				Instantiate( m_fireBall, transform.position + Vector3.left, transform.rotation );
 			}
 			//make animation of spell attack play
+			anim.Play("spell");
+			StartCoroutine("delayCast");
+
 		}
 
 		//------------------------------------------------------------------------------------------------
 		// UI
 
 		 m_text.text = "Ingredients: " + m_resources;
-
 	}
 
 	void OnCollisionEnter( Collision collision )
@@ -88,6 +102,30 @@ public class Character : MonoBehaviour
 		{
 			m_isGrounded = valueToSet;
 		}
+	}
+
+	public void addResources(){
+		m_resources++;
+		anim.Play("craft");
+		StartCoroutine("delayCraft");
+	}
+
+	IEnumerator delayJump(){
+		m_isJumping = true;
+		yield return new WaitForSeconds(0.5f);
+		m_isJumping = false;
+	}
+
+	IEnumerator delayCast(){
+		m_isCasting = true;
+		yield return new WaitForSeconds(1f);
+		m_isCasting = false;
+	}
+
+	IEnumerator delayCraft(){
+		m_isCrafting = true;
+		yield return new WaitForSeconds(0.5f);
+		m_isCrafting = false;
 	}
 	
 }

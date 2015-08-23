@@ -19,14 +19,14 @@ public class House : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		if (m_state && other.CompareTag("Player")){
 			m_state = !m_state;
-			other.GetComponent<Character>().m_resources += m_resourcesValue;
+			other.GetComponent<Character>().addResources();
 		}
 	}
 
 	void OnTriggerStay(Collider other){
 		if (m_state && other.CompareTag("Player")){
 			m_state = !m_state;
-			other.GetComponent<Character>().m_resources += m_resourcesValue;
+			other.GetComponent<Character>().addResources();
 		}
 	}
 	
