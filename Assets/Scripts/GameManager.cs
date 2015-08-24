@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour 
 {
 	public List<House> m_houses;
+	public Text m_housesText;
 
 	void Start()
 	{
-		m_houses = new List<House>();
 		StartCoroutine (LoopWinCheck ());
+	}
+
+	void Update(){
+		m_housesText.text = "Houses left : " + m_houses.Count;
 	}
 	
 	IEnumerator LoopWinCheck()
 	{
 		while ( true )
 		{
+			yield return 0;
 			if( IsWin () )
 			{
 				DoWin();
