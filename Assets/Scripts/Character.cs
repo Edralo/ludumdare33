@@ -119,7 +119,6 @@ public class Character : MonoBehaviour
 
 	void OnCollisionEnter(Collision collision){
 		if(collision.gameObject.CompareTag("Weapon")){
-			//GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezeRotationZ;
 			anim.Play("die");
 			m_isAlive = false;
 		}

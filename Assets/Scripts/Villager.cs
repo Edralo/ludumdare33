@@ -10,6 +10,7 @@ public class Villager : MonoBehaviour
 	public float m_radiusDetection;
 	public Transform m_witch;
 	public bool m_witchDetected = false;
+	public bool m_isAlive = true;
 	[Header("Weapon ref")]
 	public Transform m_rock;
 	public Transform m_spear;
@@ -40,7 +41,7 @@ public class Villager : MonoBehaviour
 		float dot = Vector3.Dot(Vector3.Normalize(directionToTarget), transform.right);
 		//NE PAS OUBLIER DE TOURNER EN Y LE NPC QUAND IL TOURNE POUR QUE LA VISION MARCHE
 
-		if (dot > 0.2 && distance < m_radiusDetection)
+		if (dot > 0.2 && distance < m_radiusDetection && m_isAlive)
 		{
 			m_witchDetected = true; //Vector3.Distance( transform.position, m_witch.position ) < m_radiusDetection;
 			if(currentWeapon != e_weapon.none && !m_isAttacking){
@@ -51,6 +52,13 @@ public class Villager : MonoBehaviour
 		else
 		{
 			m_witchDetected = false;
+		}
+	}
+
+	void OnTriggerEnter(Collider collider){
+		if(collider.gameObject.CompareTag("Fireball")){
+			//anim.Play("die");
+			m_isAlive = false;
 		}
 	}
 
@@ -80,7 +88,7 @@ public class Villager : MonoBehaviour
 	public IEnumerator switchRoutePoint(){
 		bool goforward = true;
 		int pointI = 1;
-		while(true){
+		while(m_isAlive){
 			routeCoR = route (routePoints[pointI],routeTiming[pointI]);
 			yield return StartCoroutine(routeCoR);
 			if( goforward && pointI == routePoints.Count - 1 || !goforward && pointI == 0 ){
@@ -92,7 +100,7 @@ public class Villager : MonoBehaviour
 	}
 
 	public IEnumerator throwWeapon(){
-		while (true){
+		while (m_isAlive){
 			yield return new WaitForSeconds(m_throwCooldown);
 			float ang = ElevationAngle(m_witch);
 			float shootAng = Mathf.Abs(ang) + 15; // shoot 15 degree higher
