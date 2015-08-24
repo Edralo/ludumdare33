@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
 	public bool m_isJumping = false;
 	public bool m_isCasting = false;
 	public bool m_isCrafting = false;
+	public bool m_isAlive = true;
 	public int m_resources = 0;
 	public GameObject m_fireBall;
 	public Text m_text;
@@ -28,7 +29,7 @@ public class Character : MonoBehaviour
 	
 	void Movement()
 	{
-		if(!m_isCasting && !m_isCrafting){
+		if(!m_isCasting && !m_isCrafting && m_isAlive){
 			if (Input.GetKey (KeyCode.RightArrow)) 
 			{
 				transform.Translate (Vector2.right * m_speed * Time.deltaTime);
@@ -57,17 +58,17 @@ public class Character : MonoBehaviour
 			gameObject.layer = 10;
 		}
 		//check velocity to turn nocollisions off
-		if (gameObject.layer == 10 && gameObject.GetComponent<Rigidbody> ().velocity.y <= 0 && !m_isColliding) {
+		if (gameObject.layer == 10 && GetComponent<Rigidbody> ().velocity.y <= 0 && !m_isColliding) {
 			gameObject.layer = 0;
 		}
-		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded && !m_isCasting && !m_isCrafting)
+		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded && !m_isCasting && !m_isCrafting && m_isAlive)
 		{
 			GetComponent<Rigidbody>().AddForce (Vector3.up * m_jumpHeight);
 			anim.Play("jump");
 			StartCoroutine("delayJump");
 			gameObject.layer = 10;
 		}
-		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 && !m_isCasting && !m_isCrafting && m_isGrounded)
+		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 && !m_isCasting && !m_isCrafting && m_isGrounded && m_isAlive)
 		{
 			m_resources -= 1;
 			if( transform.eulerAngles == new Vector3(0, 0, 0) )
@@ -117,6 +118,11 @@ public class Character : MonoBehaviour
 
 
 	void OnCollisionEnter(Collision collision){
+		if(collision.gameObject.CompareTag("Weapon")){
+			//GetComponent<Rigidbody>().constraints &= ~RigidbodyConstraints.FreezeRotationZ;
+			anim.Play("die");
+			m_isAlive = false;
+		}
 		m_isColliding = true;
 	}
 

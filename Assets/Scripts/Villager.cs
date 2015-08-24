@@ -22,13 +22,15 @@ public class Villager : MonoBehaviour
 	public float myangle;
 	public float mydistance;
 	[Header("Routing points")]
+	public bool m_movingVillager = false;
 	public List<Transform> routePoints = new List<Transform>();
 	public List<float> routeTiming = new List<float>();
 
 	private IEnumerator routeCoR = null;
 
 	void Start () {
-		StartCoroutine("switchRoutePoint");
+		if (m_movingVillager)
+			StartCoroutine("switchRoutePoint");
 	}
 
 	void Update () 
