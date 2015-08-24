@@ -27,15 +27,19 @@ public class Villager : MonoBehaviour
 	public List<Transform> routePoints = new List<Transform>();
 	public List<float> routeTiming = new List<float>();
 
+	public Animator m_animator;
+
 	private IEnumerator routeCoR = null;
 
 	void Start () {
+		m_animator.Play( "idle" );
 		if (m_movingVillager)
 			StartCoroutine("switchRoutePoint");
 	}
 
 	void Update () 
 	{
+		m_animator.SetBool("walking", m_movingVillager);
 		Vector3 directionToTarget = m_witch.position - transform.position;
 		float distance = directionToTarget.magnitude;
 		float dot = Vector3.Dot(Vector3.Normalize(directionToTarget), transform.right);
@@ -77,6 +81,7 @@ public class Villager : MonoBehaviour
 
 	public IEnumerator route(Transform target, float wantedTime){
 		float progress = 0;
+		m_animator.Play( "walk" );
 		Vector3 startPosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
 		while( progress < 1 ){
 			progress += Time.deltaTime / wantedTime;
@@ -106,19 +111,21 @@ public class Villager : MonoBehaviour
 			float shootAng = Mathf.Abs(ang) + 15; // shoot 15 degree higher
 			// limit the shoot angle to a convenient range:
 			shootAng = Mathf.Clamp(shootAng, 15, 85);
-
 			switch(currentWeapon){
 				case e_weapon.rock :
 					Rock weaponToThrow = Instantiate(m_rock).GetComponent<Rock>();
 					weaponToThrow.transform.position = transform.position;
 					weaponToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
 					weaponToThrow.GetComponent<Rigidbody>().AddTorque(weaponToThrow.transform.forward * Random.Range(-100,-10));
-					break;
+					
+				m_animator.Play("throw", -1, 0);
+				break;
 				case e_weapon.spear:
 					Spear SpearToThrow = Instantiate(m_spear).GetComponent<Spear>();
 					SpearToThrow.transform.position = transform.position;
 					SpearToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
-					break;
+					m_animator.Play("throw", -1, 0);
+				break;
 				default:
 					break;
 			}
