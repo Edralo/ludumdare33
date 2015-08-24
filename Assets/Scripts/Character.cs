@@ -8,6 +8,7 @@ public class Character : MonoBehaviour
 	public float m_speed; 
 	public int m_jumpHeight;
 	public bool m_isGrounded = false;
+	public bool m_isColliding = false;
 	public bool m_isJumping = false;
 	public bool m_isCasting = false;
 	public bool m_isCrafting = false;
@@ -52,8 +53,11 @@ public class Character : MonoBehaviour
 
 	void Update()
 	{
+		if (!m_isGrounded && m_isColliding) {
+			gameObject.layer = 10;
+		}
 		//check velocity to turn nocollisions off
-		if (gameObject.layer == 10 && gameObject.GetComponent<Rigidbody> ().velocity.y <= 0) {
+		if (gameObject.layer == 10 && gameObject.GetComponent<Rigidbody> ().velocity.y <= 0 && !m_isColliding) {
 			gameObject.layer = 0;
 		}
 		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded && !m_isCasting && !m_isCrafting)
@@ -109,6 +113,19 @@ public class Character : MonoBehaviour
 		m_isCrafting = true;
 		yield return new WaitForSeconds(0.5f);
 		m_isCrafting = false;
+	}
+
+
+	void OnCollisionEnter(Collision collision){
+		m_isColliding = true;
+	}
+
+	void OnCollisionStay(Collision collision){
+		m_isColliding = true;
+	}
+
+	void OnCollisionExit(Collision collision){
+		m_isColliding = false;
 	}
 
 
