@@ -27,9 +27,4 @@ public class GroundDetect : MonoBehaviour
 			m_character.m_isGrounded = valueToSet;
 		}
 	}
-
-	void OnGUI()
-	{
-		GUILayout.Button ("grounded: " + m_character.m_isGrounded);
-	}
 }

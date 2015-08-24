@@ -5,7 +5,7 @@
       <File FileName="Assets\Scripts\Character.cs" Line="3" Column="1" />
       <File FileName="Assets\Scripts\House.cs" Line="17" Column="3" />
       <File FileName="Assets\Scripts\Villager.cs" Line="58" Column="41" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="20" Column="2" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="23" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
