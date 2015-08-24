@@ -52,11 +52,16 @@ public class Character : MonoBehaviour
 
 	void Update()
 	{
+		//check velocity to turn nocollisions off
+		if (gameObject.layer == 10 && gameObject.GetComponent<Rigidbody> ().velocity.y <= 0) {
+			gameObject.layer = 0;
+		}
 		if (Input.GetKeyDown (KeyCode.UpArrow) && m_isGrounded && !m_isCasting && !m_isCrafting)
 		{
 			GetComponent<Rigidbody>().AddForce (Vector3.up * m_jumpHeight);
 			anim.Play("jump");
 			StartCoroutine("delayJump");
+			gameObject.layer = 10;
 		}
 		if ( Input.GetKeyDown (KeyCode.A) && m_resources > 0 && !m_isCasting && !m_isCrafting && m_isGrounded)
 		{
@@ -81,28 +86,6 @@ public class Character : MonoBehaviour
 		 m_text.text = "Ingredients: " + m_resources;
 	}
 
-	void OnCollisionEnter( Collision collision )
-	{
-		CheckGrounded(collision.collider.tag, true );
-	}
-
-	void OnCollisionStay( Collision collision ) 
-	{
-		CheckGrounded(collision.collider.tag, true );
-	}
-
-	void OnCollisionExit ( Collision collision ) 
-	{
-		CheckGrounded(collision.collider.tag, false );
-	}
-
-	void CheckGrounded(string tag, bool valueToSet )
-	{
-		if( tag == "Ground" )
-		{
-			m_isGrounded = valueToSet;
-		}
-	}
 
 	public void addResources(){
 		m_resources++;
@@ -127,8 +110,11 @@ public class Character : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 		m_isCrafting = false;
 	}
-	
+
+
 }
+
+
 
 
 /*using UnityEngine;
