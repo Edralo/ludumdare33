@@ -5,13 +5,9 @@ public class TitleScreen : MonoBehaviour
 {
 	public string m_gameLevelName;
 
-	public void PlayButton()
+	void Update()
 	{
-		Application.LoadLevel( m_gameLevelName );
-	}
-
-	public void CreditButton()
-	{
-
+		if (Input.anyKey)
+			Application.LoadLevel( m_gameLevelName );
 	}
 }
