@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Rock : Weapon 
 {
-	public float m_time;
 	Transform m_witch;
 
 	
@@ -15,7 +14,7 @@ public class Rock : Weapon
 
 	IEnumerator delay()
 	{
-		yield return new WaitForSeconds(m_time);
+		yield return new WaitForSeconds(5f);
 		Destroy (gameObject);
 	}
 }

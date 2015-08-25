@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 	public List<House> m_houses;
 	public Text m_housesText;
+	private int houseCount;
 
 	void Start()
 	{
@@ -14,7 +15,12 @@ public class GameManager : MonoBehaviour
 	}
 
 	void Update(){
-		m_housesText.text = "Houses left : " + m_houses.Count;
+		houseCount = 0;
+		foreach( House it in m_houses ){
+			if (it.m_state)
+				houseCount++;
+		}
+		m_housesText.text = "Houses left : " + houseCount;
 	}
 	
 	IEnumerator LoopWinCheck()

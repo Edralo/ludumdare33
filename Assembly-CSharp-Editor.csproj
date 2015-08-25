@@ -51,6 +51,7 @@
      <Compile Include="Assets\Spriter2UnityDX\Editor\PrefabBuilder.cs" />
      <Compile Include="Assets\Spriter2UnityDX\Editor\ScmlPostProcessor.cs" />
      <Compile Include="Assets\Spriter2UnityDX\Editor\ScmlSupport.cs" />
+     <None Include="Assets\Scripts\NewShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

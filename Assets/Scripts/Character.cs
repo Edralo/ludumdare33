@@ -116,11 +116,17 @@ public class Character : MonoBehaviour
 		m_isCrafting = false;
 	}
 
+	IEnumerator delayReturnTitle(){
+		yield return new WaitForSeconds(6f);
+		Application.LoadLevel("Title");
+	}
+
 
 	void OnCollisionEnter(Collision collision){
 		if(collision.gameObject.CompareTag("Weapon")){
 			anim.Play("die");
 			m_isAlive = false;
+			StartCoroutine("delayReturnTitle");
 		}
 		m_isColliding = true;
 	}

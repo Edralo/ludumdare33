@@ -64,6 +64,9 @@ public class Villager : MonoBehaviour
 				StartCoroutine("throwWeapon");
 			}
 		}
+		else if (m_isAttacking && distance > 14){
+			m_isAttacking = !m_isAttacking;
+		}
 		else
 		{
 			m_witchDetected = false;
@@ -125,7 +128,7 @@ public class Villager : MonoBehaviour
 
 	public IEnumerator throwWeapon()
 	{
-		while (m_isAlive)
+		while (m_isAlive && m_isAttacking)
 		{
 			yield return new WaitForSeconds(m_throwCooldown);
 			float ang = ElevationAngle(m_witch);
