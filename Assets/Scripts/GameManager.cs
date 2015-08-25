@@ -43,6 +43,6 @@ public class GameManager : MonoBehaviour
 
 	void DoWin()
 	{
-		Debug.Log ( " you win " );
+		Application.LoadLevel("Ending");
 	}
 }
