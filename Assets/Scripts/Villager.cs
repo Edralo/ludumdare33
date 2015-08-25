@@ -113,18 +113,21 @@ public class Villager : MonoBehaviour
 			shootAng = Mathf.Clamp(shootAng, 15, 85);
 			switch(currentWeapon){
 				case e_weapon.rock :
+					m_animator.Play("throw", -1, 0);
+					yield return new WaitForSeconds(0.5f);
 					Rock weaponToThrow = Instantiate(m_rock).GetComponent<Rock>();
 					weaponToThrow.transform.position = transform.position;
 					weaponToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
 					weaponToThrow.GetComponent<Rigidbody>().AddTorque(weaponToThrow.transform.forward * Random.Range(-100,-10));
 					
-				m_animator.Play("throw", -1, 0);
+
 				break;
 				case e_weapon.spear:
+					m_animator.Play("throw", -1, 0);
+					yield return new WaitForSeconds(0.5f);
 					Spear SpearToThrow = Instantiate(m_spear).GetComponent<Spear>();
 					SpearToThrow.transform.position = transform.position;
 					SpearToThrow.GetComponent<Rigidbody>().velocity = BallisticVel(m_witch, shootAng);
-					m_animator.Play("throw", -1, 0);
 				break;
 				default:
 					break;
