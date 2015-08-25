@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Rock : Weapon {
-	public float m_distanceToDestroy;
+public class Rock : Weapon 
+{
+	public float m_time;
 	Transform m_witch;
+
 	
 	void Start()
 	{
 		m_witch = GameObject.FindGameObjectWithTag("Player").transform;
+		StartCoroutine ("delay");
 	}
-	
-	void Update()
+
+	IEnumerator delay()
 	{
-		if( Vector3.Distance ( transform.position, m_witch.position ) < m_distanceToDestroy )
-		{
-			Destroy ( gameObject );
-		}
+		yield return new WaitForSeconds(m_time);
+		Destroy (gameObject);
 	}
 }
