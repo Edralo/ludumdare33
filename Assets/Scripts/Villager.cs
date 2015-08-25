@@ -75,6 +75,7 @@ public class Villager : MonoBehaviour
 		if(collider.gameObject.CompareTag("Fireball"))
 		{
 			//anim.Play("die");
+			Destroy(gameObject);
 			m_isAlive = false;
 		}
 	}
